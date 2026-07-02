@@ -88,7 +88,7 @@ try {
 
                     <div class="d-grid gap-2">
                         <!-- Mantenemos la ejecución de tu función original en el JS -->
-                        <button type="submit" class="btn btn-warning btn_add" onclick="actualizarEmpleado(event)">
+                        <button type="submit" class="btn btn-warning btn_add text-white" onclick="actualizarEmpleado(event)">
                             Actualizar datos del usuario
                         </button>
                     </div>
