@@ -78,7 +78,7 @@ async function cargarDatosUsuarioEditar(idUsuario) {
 /**
  * Función para procesar el envío del formulario editado
  */
-async function actualizarEmpleado(event) {
+async function actualizarUsuario(event) {
   try {
     event.preventDefault();
 
