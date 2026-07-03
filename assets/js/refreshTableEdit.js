@@ -1,32 +1,32 @@
 // Define la función globalmente adjuntándola al objeto window
-window.actualizarEmpleadoEdit = async function (idEmpleado) {
+window.actualizarUsuarioEdit = async function (idUsuario) {
   try {
     const response = await axios.get(
-      `acciones/getEmpleado.php?id=${idEmpleado}`
+      `acciones/getEmpleado.php?id=${idUsuario}`
     );
     if (response.status === 200) {
-      const infoEmpleado = response.data; // Obtener los datos del empleado desde la respuesta
+      const infoUsuario = response.data; // Obtener los datos del usuario desde la respuesta
 
-      let tr = document.querySelector(`#empleado_${idEmpleado}`);
+      let tr = document.querySelector(`#usuario_${idUsuario}`);
       let tablaHTML = "";
       tablaHTML += `
-          <tr id="empleado_${infoEmpleado.id}">
+          <tr id="usuario_${infoUsuario.id}">
             <th class="dt-type-numeric sorting_1" scope="row">${
-              infoEmpleado.id
+              infoUsuario.id
             }</th>
-            <td>${infoEmpleado.nombre}</td>
-            <td>${infoEmpleado.edad}</td>
-            <td>${infoEmpleado.cedula}</td>
-            <td>${infoEmpleado.cargo}</td>
+            <td>${infoUsuario.nombre}</td>
+            <td>${infoUsuario.usuario}</td>
+            <td>${infoUsuario.cargo}</td>
+            <td>${infoUsuario.rol}</td>
             <td>
-              <a title="Ver detalles del empleado" href="#" onclick="verDetallesEmpleado(${
-                infoEmpleado.id
+              <a title="Ver detalles del usuario" href="#" onclick="verDetallesEmpleado(${
+                infoUsuario.id
               })" class="btn btn-success"><i class="bi bi-binoculars"></i></a>
-              <a title="Editar datos del empleado" href="#" onclick="editarEmpleado(${
-                infoEmpleado.id
+              <a title="Editar datos del usuario" href="#" onclick="editarEmpleado(${
+                infoUsuario.id
               })" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
-              <a title="Eliminar datos del empleado" href="#" onclick="eliminarEmpleado(${
-                infoEmpleado.id
+              <a title="Eliminar datos del usuario" href="#" onclick="eliminarEmpleado(${
+                infoUsuario.id
               })" class="btn btn-danger"><i class="bi bi-trash"></i></a>
             </td>
           </tr>
@@ -36,6 +36,6 @@ window.actualizarEmpleadoEdit = async function (idEmpleado) {
       tr.innerHTML = tablaHTML;
     }
   } catch (error) {
-    console.error("Error al obtener la información del empleado", error);
+    console.error("Error al obtener la información del usuario", error);
   }
 };

@@ -62,7 +62,7 @@ async function registrarEmpleado(event) {
     if (response.status === 200) {
       formulario.reset();
 
-      window.insertEmpleadoTable();
+      window.insertarUsuarioTabla();
 
       setTimeout(() => {
         const modalEl = document.getElementById("agregarEmpleadoModal");

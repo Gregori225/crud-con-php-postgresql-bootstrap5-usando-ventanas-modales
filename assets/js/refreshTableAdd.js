@@ -1,5 +1,5 @@
 // Define la función globalmente adjuntándola al objeto window
-window.insertEmpleadoTable = async function () {
+window.insertarUsuarioTabla = async function () {
   try {
     // Apuntamos al nuevo archivo PHP que traerá el último usuario de Postgres
     const response = await axios.get(`acciones/getUltimoUsuario.php`);

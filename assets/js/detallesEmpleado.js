@@ -1,5 +1,5 @@
 /**
- * Función para mostrar la modal de detalles del empleado
+ * Función para mostrar la modal de detalles del usuario
  */
 async function verDetallesEmpleado(idUsuario) {
   try {
