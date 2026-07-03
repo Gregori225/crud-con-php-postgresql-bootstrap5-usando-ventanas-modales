@@ -1,1 +1,43 @@
-Nothing needs to be added to .gitignore since only a README.md file was added, which is a source/config file. No build artifacts, dependencies, or temporary files were included in the changes.
+```
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+
+# Dependencies
+vendor/
+composer.lock
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Backup files
+*~
+*.bak
+*.swp
+
+# Cache directories
+.cache/
+.php_cs.cache
+
+# Distribution / packaging
+dist/
+build/
+*.phar
+
+# Testing
+.phpunit.result.cache
+```

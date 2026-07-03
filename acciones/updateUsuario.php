@@ -7,19 +7,28 @@ include_once("../config/config.php");
 // Aseguramos que solo responda a peticiones POST de tu formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    // Verificar token CSRF si está implementado en el frontend
+    if (isset($_POST['csrf_token'])) {
+        if (!verificarCSRF($_POST['csrf_token'])) {
+            http_response_code(403);
+            echo json_encode(["status" => "error", "message" => "Token CSRF inválido"]);
+            exit;
+        }
+    }
+
     // 2. Recolectamos los datos sanitizando entradas básicas
     $id = isset($_POST['id']) ? intval($_POST['id']) : null;
-    $nombre = isset($_POST['nombre']) ? trim($_POST['nombre']) : null;
-    $usuario = isset($_POST['usuario']) ? trim($_POST['usuario']) : null;
-    $rol = isset($_POST['rol']) ? trim($_POST['rol']) : null;
-    $cargo = isset($_POST['cargo']) ? trim($_POST['cargo']) : null;
-    $id_departamento = isset($_POST['id_departamento']) ? intval($_POST['id_departamento']) : null;
+    $nombre = isset($_POST['nombre']) ? trim($_POST['nombre']) : '';
+    $usuario = isset($_POST['usuario']) ? trim($_POST['usuario']) : '';
+    $rol = isset($_POST['rol']) ? trim($_POST['rol']) : '';
+    $cargo = isset($_POST['cargo']) ? trim($_POST['cargo']) : '';
+    $id_departamento = isset($_POST['id_departamento']) ? intval($_POST['id_departamento']) : 0;
 
     // Postgres necesita un booleano nativo (true/false), no el string "true"/"false" de HTML
     $activo = isset($_POST['activo']) ? ($_POST['activo'] === 'true') : true;
 
     // Validación básica: que los campos requeridos no viajen vacíos
-    if (!$id || !$nombre || !$usuario || !$rol || !$cargo || !$id_departamento) {
+    if (!$id || empty($nombre) || empty($usuario) || empty($rol) || empty($cargo) || $id_departamento === 0) {
         http_response_code(400); // Bad Request
         echo json_encode(["status" => "error", "message" => "Faltan campos obligatorios para actualizar."]);
         exit;

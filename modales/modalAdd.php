@@ -29,25 +29,29 @@ try {
                 <?php endif; ?>
             </div>
             <div class="modal-body">
+                <!-- Incluimos token CSRF oculto para seguridad -->
+                <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
+                
                 <!-- Mantenemos el ID "formularioEmpleado" para que el JS original lo procese sin romperse -->
                 <form id="formularioEmpleado" action="" method="POST" autocomplete="off">
 
                     <!-- Campo: Nombre -->
                     <div class="mb-3">
                         <label class="form-label">Nombre Completo</label>
-                        <input type="text" name="nombre" class="form-control" required placeholder="Ej. Juan Pérez" />
+                        <input type="text" name="nombre" class="form-control" required placeholder="Ej. Juan Pérez" maxlength="100" />
                     </div>
 
                     <div class="row mb-3">
                         <!-- Campo: Usuario (Login) -->
                         <div class="col-md-6">
                             <label class="form-label">Usuario (Login)</label>
-                            <input type="text" name="usuario" class="form-control" required placeholder="jperez" />
+                            <input type="text" name="usuario" class="form-control" required placeholder="jperez" maxlength="50" pattern="[a-zA-Z0-9_]+" title="Solo letras, números y guiones bajos" />
                         </div>
                         <!-- Campo: Contraseña -->
                         <div class="col-md-6">
                             <label class="form-label">Contraseña</label>
-                            <input type="password" name="contrasena" class="form-control" required placeholder="********" />
+                            <input type="password" name="contrasena" class="form-control" required placeholder="********" minlength="8" maxlength="100" />
+                            <small class="text-muted">Mínimo 8 caracteres</small>
                         </div>
                     </div>
 
@@ -66,7 +70,7 @@ try {
                         <!-- Campo: Cargo -->
                         <div class="col-md-6">
                             <label class="form-label">Cargo</label>
-                            <input type="text" name="cargo" class="form-control" required placeholder="Ej. Analista de Soporte" />
+                            <input type="text" name="cargo" class="form-control" required placeholder="Ej. Analista de Soporte" maxlength="100" />
                         </div>
                     </div>
 
@@ -76,7 +80,7 @@ try {
                         <select name="id_departamento" class="form-select" required>
                             <option selected value="">Seleccione el departamento</option>
                             <?php foreach ($departamentos as $dep): ?>
-                                <option value="<?php echo $dep['id']; ?>">
+                                <option value="<?php echo (int)$dep['id']; ?>">
                                     <?php echo htmlspecialchars($dep['nombre']); ?>
                                 </option>
                             <?php endforeach; ?>

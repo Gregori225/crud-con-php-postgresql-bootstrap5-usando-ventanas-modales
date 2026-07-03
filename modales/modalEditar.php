@@ -28,6 +28,8 @@ try {
 
             <div class="modal-body">
                 <form id="formularioUsuarioEdit" action="" method="POST" autocomplete="off">
+                    <!-- Incluimos token CSRF oculto para seguridad -->
+                    <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
 
                     <!-- ID oculto para saber a qué registro de Postgres aplicarle el UPDATE -->
                     <input type="hidden" name="id" id="id_usuario" />
@@ -35,13 +37,13 @@ try {
                     <!-- Campo: Nombre -->
                     <div class="mb-3">
                         <label class="form-label">Nombre Completo</label>
-                        <input type="text" name="nombre" id="nombre_edit" class="form-control" required />
+                        <input type="text" name="nombre" id="nombre_edit" class="form-control" required maxlength="100" />
                     </div>
 
                     <!-- Campo: Usuario (Login) -->
                     <div class="mb-3">
                         <label class="form-label">Usuario (Login)</label>
-                        <input type="text" name="usuario" id="usuario_edit" class="form-control" required />
+                        <input type="text" name="usuario" id="usuario_edit" class="form-control" required maxlength="50" pattern="[a-zA-Z0-9_]+" title="Solo letras, números y guiones bajos" />
                     </div>
 
                     <div class="row mb-3">
@@ -58,7 +60,7 @@ try {
                         <!-- Campo: Cargo -->
                         <div class="col-md-6">
                             <label class="form-label">Cargo</label>
-                            <input type="text" name="cargo" id="cargo_edit" class="form-control" required />
+                            <input type="text" name="cargo" id="cargo_edit" class="form-control" required maxlength="100" />
                         </div>
                     </div>
 
@@ -69,7 +71,7 @@ try {
                             <select name="id_departamento" id="id_departamento_edit" class="form-select" required>
                                 <option value="">Seleccione</option>
                                 <?php foreach ($departamentos as $dep): ?>
-                                    <option value="<?php echo $dep['id']; ?>">
+                                    <option value="<?php echo (int)$dep['id']; ?>">
                                         <?php echo htmlspecialchars($dep['nombre']); ?>
                                     </option>
                                 <?php endforeach; ?>
