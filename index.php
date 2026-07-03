@@ -22,46 +22,59 @@
     ?>
 
     <h1 class="text-center mt-5 mb-5 fw-bold">CRUD completo de Usuarios con PHP, PostgreSQL y Bootstrap 5</h1>
-
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col-md-12">
                 <h1 class="text-center">
                     <span class="float-start">
-                        <!-- Cambiado a modalRegistrarUsuario() para tu nueva lógica -->
                         <a href="#" onclick="modalRegistrarEmpleado()" class="btn btn-success" title="Registrar Nuevo Usuario">
                             <i class="bi bi-person-plus"></i>
                         </a>
                     </span>
                     Lista de usuarios (<?php echo $totalUsuarios ?>)
                     <span class="float-end">
-                        <a href="acciones/exportar.php" class="btn btn-success" title="Exportar a CSV" download="usuarios.csv"><i class="bi bi-filetype-csv"></i></a>
+                        <a href="acciones/exportarCSV.php" class="btn btn-success" title="Exportar a CSV">
+                            <i class="bi bi-filetype-csv"></i>
+                        </a>
                     </span>
                     <hr>
                 </h1>
-                <?php
-                // Renombra tu archivo 'empleados.php' a 'usuarios.php' para mantener el orden
-                include("usuarios.php");
-                ?>
+
+                <div class="row mb-3 justify-content-end">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" id="inputBuscar" class="form-control" placeholder="Buscar por nombre, cargo, rol...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🖱️ CONTENEDOR CON SCROLL PARA EL RATÓN -->
+                <!-- Puedes cambiar el 'max-height: 400px' por la altura que más te guste -->
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 8px;">
+                    <?php
+                    // Renombra tu archivo 'empleados.php' a 'usuarios.php' para mantener el orden
+                    include("usuarios.php");
+                    ?>
+                </div>
             </div>
         </div>
-    </div>
 
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <!-- NOTA: Dejé los nombres de los scripts JS del proyecto original para que no se rompa nada por ahora, -->
+        <!-- pero internamente los iremos adaptando a tus usuarios. -->
+        <script src="assets/js/detallesEmpleado.js"></script>
+        <script src="assets/js/addEmpleado.js"></script>
+        <script src="assets/js/editarEmpleado.js"></script>
+        <script src="assets/js/eliminarEmpleado.js"></script>
+        <script src="assets/js/refreshTableAdd.js"></script>
+        <script src="assets/js/refreshTableEdit.js"></script>
+        <script src="assets/js/buscarUsuario.js"></script>
 
-    <!-- NOTA: Dejé los nombres de los scripts JS del proyecto original para que no se rompa nada por ahora, -->
-    <!-- pero internamente los iremos adaptando a tus usuarios. -->
-    <script src="assets/js/detallesEmpleado.js"></script>
-    <script src="assets/js/addEmpleado.js"></script>
-    <script src="assets/js/editarEmpleado.js"></script>
-    <script src="assets/js/eliminarEmpleado.js"></script>
-    <script src="assets/js/refreshTableAdd.js"></script>
-    <script src="assets/js/refreshTableEdit.js"></script>
-
-    <!-- Libreria para alertas -->
-    <script src="https://unpkg.com/nextjs-toast-notify@latest/dist/nextjs-toast-notify.min.js"></script>
+        <!-- Libreria para alertas -->
+        <script src="https://unpkg.com/nextjs-toast-notify@latest/dist/nextjs-toast-notify.min.js"></script>
 
 </body>
 
