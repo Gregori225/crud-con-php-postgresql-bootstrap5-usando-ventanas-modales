@@ -52,3 +52,10 @@ function obtenerUsuarios($conexion)
     }
     return $stmt;
 }
+
+
+function obtenerDepartamentos($conexion)
+{
+    $sql = "SELECT id, nombre FROM public.departamentos ORDER BY id ASC";
+    return $conexion->query($sql);
+}
