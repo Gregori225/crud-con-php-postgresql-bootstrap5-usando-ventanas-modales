@@ -34,6 +34,10 @@ async function editarEmpleado(idUsuario) {
     await cargarDatosUsuarioEditar(idUsuario);
   } catch (error) {
     console.error(error);
+    showToast.error("Error al cargar la modal de edición", {
+      duration: 4000,
+      position: "bottom-right"
+    });
   }
 }
 
@@ -68,10 +72,17 @@ async function cargarDatosUsuarioEditar(idUsuario) {
       }
     } else {
       console.log("Error al cargar el usuario a editar");
+      showToast.error("Error al cargar los datos del usuario", {
+        duration: 4000,
+        position: "bottom-right"
+      });
     }
   } catch (error) {
     console.error(error);
-    alert("Hubo un problema al cargar los detalles del usuario");
+    showToast.error("Hubo un problema al cargar los detalles del usuario", {
+      duration: 4000,
+      position: "bottom-right"
+    });
   }
 }
 
@@ -118,8 +129,16 @@ async function actualizarUsuario(event) {
       }, 600);
     } else {
       console.error("Error al actualizar el usuario");
+      showToast.error("Error al actualizar el usuario", {
+        duration: 4000,
+        position: "bottom-right"
+      });
     }
   } catch (error) {
     console.error("Error al enviar el formulario", error);
+    showToast.error("Error al enviar el formulario", {
+      duration: 4000,
+      position: "bottom-right"
+    });
   }
 }

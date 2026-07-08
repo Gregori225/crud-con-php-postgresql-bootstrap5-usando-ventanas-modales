@@ -18,6 +18,12 @@ window.actualizarUsuarioEdit = async function (idUsuario) {
             <td>${infoUsuario.usuario}</td>
             <td>${infoUsuario.cargo}</td>
             <td>${infoUsuario.rol}</td>
+            <td>${infoUsuario.departamento || 'N/A'}</td>
+            <td>${
+              infoUsuario.activo 
+                ? '<span class="badge bg-success">Activo</span>' 
+                : '<span class="badge bg-danger">Inactivo</span>'
+            }</td>
             <td>
               <a title="Ver detalles del usuario" href="#" onclick="verDetallesEmpleado(${
                 infoUsuario.id
@@ -37,5 +43,9 @@ window.actualizarUsuarioEdit = async function (idUsuario) {
     }
   } catch (error) {
     console.error("Error al obtener la información del usuario", error);
+    showToast.error("Error al actualizar la fila del usuario", {
+      duration: 4000,
+      position: "bottom-right"
+    });
   }
 };

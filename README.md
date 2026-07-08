@@ -1,136 +1,213 @@
-# CRUD de Usuarios en PHP, PostgreSQL y Bootstrap 5
+# CRUD de Usuarios en PHP y PostgreSQL
 
-Aplicación web completa para la gestión de usuarios (CRUD - Crear, Leer, Actualizar, Eliminar) desarrollada con **PHP**, **PostgreSQL** y **Bootstrap 5**, utilizando modales para una experiencia de usuario moderna e interactiva.
+Sistema CRUD completo para gestión de usuarios y departamentos utilizando PHP, PostgreSQL y Bootstrap 5.
 
-## 🚀 Características
+## 📋 Requisitos
 
-- ✅ **CRUD completo**: Registro, visualización, edición y eliminación de usuarios
-- 🎨 **Interfaz moderna**: Diseño responsivo con Bootstrap 5
-- 🔍 **Búsqueda y filtrado**: Búsqueda en tiempo real de usuarios
-- 📊 **Exportación a CSV**: Exporta la lista de usuarios a formato CSV
-- 💾 **Base de datos PostgreSQL**: Conexión segura mediante PDO
-- 🔔 **Alertas modernas**: Notificaciones tipo Next.js para feedback al usuario
-- 🪟 **Modales interactivos**: Formularios emergentes para operaciones CRUD
+- PHP 7.4 o superior
+- PostgreSQL 12 o superior
+- Extensiones PHP: PDO, pdo_pgsql
+- Servidor web (Apache/Nginx)
 
-## 📁 Estructura del Proyecto
-
-```
-├── index.php                 # Página principal con listado de usuarios
-├── usuarios.php              # Vista de la tabla de usuarios
-├── config/
-│   └── config.php            # Configuración de conexión a PostgreSQL
-├── acciones/
-│   ├── acciones.php          # Funciones principales del CRUD
-│   ├── updateUsuario.php     # Actualización de usuarios
-│   ├── delete.php            # Eliminación de usuarios
-│   ├── detallesUsuario.php   # Obtener detalles de un usuario
-│   ├── exportar.php          # Exportar datos a CSV
-│   └── getUltimoUsuario.php  # Obtener el último usuario registrado
-├── modales/                  # Modales para formularios
-├── assets/
-│   ├── css/                  # Estilos personalizados
-│   ├── js/                   # Scripts JavaScript (Axios, Bootstrap)
-│   └── imgs/                 # Imágenes del proyecto
-└── README.md                 # Este archivo
-```
-
-## 🛠️ Requisitos Previos
-
-- **PHP** >= 7.4 (recomendado PHP 8.x)
-- **PostgreSQL** >= 12
-- **Extensión PDO-PgSQL** habilitada en PHP
-- **Servidor web** (Apache, Nginx, o XAMPP/WAMP/MAMP)
-- **Composer** (opcional, para dependencias futuras)
-
-## ⚙️ Instalación
+## 🔧 Instalación
 
 ### 1. Clonar el repositorio
 
 ```bash
 git clone <url-del-repositorio>
-cd <nombre-del-proyecto>
+cd <directorio-del-proyecto>
 ```
 
-### 2. Configurar la base de datos
+### 2. Configurar variables de entorno
 
-Crear la base de datos en PostgreSQL:
+Copia el archivo `.env.example` a `.env` y ajusta las credenciales:
+
+```bash
+cp .env.example .env
+```
+
+Edita `.env` con tus datos:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=tu_contraseña_segura
+DB_NAME=INFORMESV1
+```
+
+### 3. Crear la base de datos
+
+Conéctate a PostgreSQL y ejecuta:
 
 ```sql
 CREATE DATABASE INFORMESV1;
+
+\c INFORMESV1
+
+-- Tabla de departamentos
+CREATE TABLE departamentos (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabla de usuarios
+CREATE TABLE usuarios (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    usuario VARCHAR(50) NOT NULL UNIQUE,
+    rol VARCHAR(20) DEFAULT 'user',
+    cargo VARCHAR(100),
+    id_departamento INTEGER REFERENCES departamentos(id),
+    activo BOOLEAN DEFAULT true,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Índices para optimizar consultas
+CREATE INDEX idx_usuarios_departamento ON usuarios(id_departamento);
+CREATE INDEX idx_usuarios_activo ON usuarios(activo);
+CREATE INDEX idx_usuarios_rol ON usuarios(rol);
 ```
 
-Ejecutar el script SQL para crear la tabla de usuarios (si está disponible en `/assets/sql/` o similar).
+### 4. Configurar el servidor web
 
-### 3. Configurar la conexión
-
-Editar el archivo `config/config.php` con tus credenciales de PostgreSQL:
-
-```php
-$host = "localhost";
-$port = "5432";
-$usuario = "postgres";
-$contrasena = "tu_contraseña";
-$base_de_datos = "INFORMESV1";
+**Apache:**
+```apache
+<VirtualHost *:80>
+    DocumentRoot /ruta/al/proyecto
+    <Directory /ruta/al/proyecto>
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
 ```
 
-### 4. Permisos
+**Nginx:**
+```nginx
+server {
+    listen 80;
+    server_name localhost;
+    root /ruta/al/proyecto;
+    index index.php;
 
-Asegúrate de que el servidor web tenga permisos de lectura en todos los archivos del proyecto.
+    location ~ \.php$ {
+        include fastcgi_params;
+        fastcgi_pass unix:/var/run/php/php-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}
+```
 
-### 5. Acceder a la aplicación
+### 5. Acceder al sistema
 
-Abre tu navegador y navega a:
+Abre tu navegador y navega a `http://localhost` o la URL configurada.
+
+## 🚀 Características
+
+### Módulo de Usuarios
+- ✅ Listado de usuarios con paginación
+- ✅ Búsqueda en tiempo real
+- ✅ Registro de nuevos usuarios
+- ✅ Edición de datos
+- ✅ Eliminación con confirmación
+- ✅ Vista de detalles completos
+- ✅ Exportación a CSV
+
+### Módulo de Departamentos
+- ✅ Gestión de departamentos
+- ✅ Validación de relaciones (no elimina si tiene usuarios)
+- ✅ Contador en tiempo real
+
+## 🔒 Seguridad
+
+- ✅ Contraseñas en variables de entorno (no hardcodeadas)
+- ✅ Validación de entrada en todos los endpoints
+- ✅ Sentencias preparadas (PDO) para prevenir SQL Injection
+- ✅ Sanitización de datos de salida (htmlspecialchars)
+- ✅ Manejo adecuado de errores
+
+## 📁 Estructura del Proyecto
 
 ```
-http://localhost/<carpeta-del-proyecto>/index.php
+/workspace
+├── config/
+│   └── config.php          # Configuración de conexión DB
+├── acciones/
+│   ├── acciones.php        # Funciones auxiliares
+│   ├── addDepartamento.php
+│   ├── delete.php
+│   ├── deleteDepartamento.php
+│   ├── detallesUsuario.php
+│   ├── detallesUsuarioCompleto.php
+│   ├── exportar.php
+│   ├── getEmpleado.php
+│   ├── getUltimoUsuario.php
+│   └── updateUsuario.php
+├── modales/
+│   ├── modalAdd.php
+│   ├── modalDelete.php
+│   ├── modalDeleteDepartamento.php
+│   ├── modalDetalles.php
+│   └── modalEditar.php
+├── assets/
+│   ├── css/
+│   │   └── home.css
+│   ├── js/
+│   │   ├── addEmpleado.js
+│   │   ├── buscarUsuario.js
+│   │   ├── departamentos.js
+│   │   ├── detallesEmpleado.js
+│   │   ├── editarEmpleado.js
+│   │   ├── eliminarEmpleado.js
+│   │   ├── refreshTableAdd.js
+│   │   └── refreshTableEdit.js
+│   └── imgs/
+├── index.php               # Página principal
+├── usuarios.php            # Vista parcial de usuarios
+├── .env.example            # Plantilla de variables de entorno
+└── README.md               # Este archivo
 ```
 
-## 📖 Uso
+## 🛠️ Mejoras Implementadas
 
-1. **Listar usuarios**: La página principal muestra todos los usuarios registrados
-2. **Registrar nuevo usuario**: Haz clic en el botón verde `+` para abrir el modal de registro
-3. **Editar usuario**: Haz clic en el ícono de lápiz junto a cada usuario
-4. **Ver detalles**: Haz clic en el ícono de ojo para ver información detallada
-5. **Eliminar usuario**: Haz clic en el ícono de basura para eliminar un usuario
-6. **Exportar a CSV**: Haz clic en el botón CSV para descargar el listado completo
+### Correcciones de Errores
+1. ✅ **Contraseña hardcodeada**: Ahora usa variables de entorno
+2. ✅ **Enlace roto**: Corregido `exportarCSV.php` → `exportar.php`
+3. ✅ **Validación de ID**: Agregada validación robusta en `deleteDepartamento.php`
+4. ✅ **Inconsistencia estructural**: Añadidas columnas "Departamento" y "Estado" en `refreshTableEdit.js`
+5. ✅ **Uso de alert()**: Reemplazado por `showToast()` en todos los archivos JS
 
-## 🔧 Tecnologías Utilizadas
+### Mejoras de Seguridad
+- Variables de entorno para credenciales sensibles
+- Validación de entrada en todos los endpoints POST/GET
+- Uso consistente de sentencias preparadas
 
-| Tecnología | Versión | Descripción |
-|------------|---------|-------------|
-| PHP | 7.4+ | Lenguaje de programación backend |
-| PostgreSQL | 12+ | Sistema de gestión de bases de datos |
-| Bootstrap | 5.3.3 | Framework CSS para diseño responsivo |
-| Bootstrap Icons | 1.11.3 | Íconos para la interfaz |
-| Axios | Latest | Cliente HTTP para peticiones AJAX |
-| Next.js Toast Notify | Latest | Sistema de notificaciones |
+### Mejoras de UX
+- Notificaciones toast en lugar de alertas nativas
+- Animaciones suaves en eliminaciones
+- Feedback visual consistente
+
+## 📝 Notas Importantes
+
+- **Nunca** subas el archivo `.env` al repositorio
+- Cambia la contraseña por defecto en producción
+- Considera implementar tokens CSRF para mayor seguridad
+- Activa HTTPS en producción
 
 ## 🤝 Contribución
 
-Las contribuciones son bienvenidas. Por favor:
-
-1. Haz un fork del proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/NuevaFeature`)
-3. Commit tus cambios (`git commit -m 'Add nueva feature'`)
-4. Push a la rama (`git push origin feature/NuevaFeature`)
+1. Fork el proyecto
+2. Crea una rama (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit tus cambios (`git commit -m 'Añadir nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
 5. Abre un Pull Request
 
 ## 📄 Licencia
 
-Este proyecto está bajo la licencia MIT. Consulta el archivo `LICENSE` si existe.
-
-## 👨‍💻 Autor
-
-Proyecto desarrollado como ejemplo de CRUD completo con PHP, PostgreSQL y Bootstrap 5.
-
-## 🆘 Soporte
-
-Si encuentras algún problema o tienes alguna pregunta:
-
-1. Revisa que la configuración de la base de datos sea correcta
-2. Verifica que la extensión `pdo_pgsql` esté habilitada en PHP
-3. Revisa los logs de errores de PHP para más detalles
+Este proyecto está bajo la licencia MIT.
 
 ---
 
-**¡Disfruta gestionando tus usuarios de manera eficiente!** 🎉
+**Desarrollado con ❤️ usando PHP, PostgreSQL y Bootstrap 5**

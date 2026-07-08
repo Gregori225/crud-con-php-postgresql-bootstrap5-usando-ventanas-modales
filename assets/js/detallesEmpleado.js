@@ -37,6 +37,10 @@ async function verDetallesEmpleado(idUsuario) {
     await cargarDetalleEmpleado(idUsuario);
   } catch (error) {
     console.error(error);
+    showToast.error("Error al cargar la modal de detalles", {
+      duration: 4000,
+      position: "bottom-right"
+    });
   }
 }
 
@@ -97,10 +101,16 @@ async function cargarDetalleEmpleado(idUsuario) {
         `;
       }
     } else {
-      alert(`Error al cargar los detalles del usuario con ID ${idUsuario}`);
+      showToast.error(`Error al cargar los detalles del usuario con ID ${idUsuario}`, {
+        duration: 4000,
+        position: "bottom-right"
+      });
     }
   } catch (error) {
     console.error(error);
-    alert("Hubo un problema al cargar los detalles del usuario");
+    showToast.error("Hubo un problema al cargar los detalles del usuario", {
+      duration: 4000,
+      position: "bottom-right"
+    });
   }
 }

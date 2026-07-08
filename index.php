@@ -41,7 +41,7 @@
                             <button onclick="modalRegistrarEmpleado()" class="btn btn-success me-2" title="Registrar Nuevo Usuario">
                                 <i class="bi bi-person-plus"></i> <span class="d-none d-sm-inline">Nuevo Usuario</span>
                             </button>
-                            <a href="acciones/exportarCSV.php" class="btn btn-outline-success" title="Exportar a CSV">
+                            <a href="acciones/exportar.php" class="btn btn-outline-success" title="Exportar a CSV">
                                 <i class="bi bi-filetype-csv"></i>
                             </a>
                         </div>

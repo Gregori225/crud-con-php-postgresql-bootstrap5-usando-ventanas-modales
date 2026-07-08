@@ -93,14 +93,21 @@ async function eliminarEmpleado(idUsuario) {
               sound: true,
             });
           } else {
-            alert(
+            showToast.error(
               response.data.message ||
                 `Error al eliminar el usuario con ID ${idParaBorrar}`,
+              {
+                duration: 4000,
+                position: "bottom-right"
+              }
             );
           }
         } catch (error) {
           console.error(error);
-          alert("Hubo un problema al eliminar al usuario en la base de datos");
+          showToast.error("Hubo un problema al eliminar al usuario en la base de datos", {
+            duration: 4000,
+            position: "bottom-right"
+          });
         } finally {
           // Cerramos la modal de forma controlada
           const confirmModalEl = document.getElementById("confirmModal");
@@ -112,6 +119,9 @@ async function eliminarEmpleado(idUsuario) {
       });
   } catch (error) {
     console.error(error);
-    alert("Hubo un problema al procesar la modal de confirmación");
+    showToast.error("Hubo un problema al procesar la modal de confirmación", {
+      duration: 4000,
+      position: "bottom-right"
+    });
   }
 }

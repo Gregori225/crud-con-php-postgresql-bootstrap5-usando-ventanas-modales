@@ -1,7 +1,26 @@
 <?php
 include("../config/config.php");
 
-$id = $_GET['id'];
+// Validación robusta del ID
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    http_response_code(400);
+    echo json_encode([
+        'success' => false,
+        'message' => 'ID de departamento no válido o faltante.'
+    ]);
+    exit;
+}
+
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
+if ($id === false || $id === null) {
+    http_response_code(400);
+    echo json_encode([
+        'success' => false,
+        'message' => 'ID de departamento debe ser un número entero válido.'
+    ]);
+    exit;
+}
 
 try {
     $sql = "DELETE FROM departamentos WHERE id = :id";
